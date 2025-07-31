@@ -109,23 +109,19 @@ async function trackDownload() {
         console.log('🥇 Tracking download...');
         const response = await fetch(`${BACKEND_URL}/api/track-download`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
-                userId: 'anonymous',
-                deviceInfo: {
-                    platform: navigator.platform,
-                    userAgent: navigator.userAgent,
-                    language: navigator.language,
-                    cookieEnabled: navigator.cookieEnabled
-                },
-                timestamp: Date.now()
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent,
+                referrer: document.referrer
             })
         });
         
         const data = await response.json();
+        
         if (data.success) {
-            console.log('🥇 Download tracked successfully! Total downloads:', data.totalDownloads);
-            
             // Update the download count immediately
             const downloadElement = document.getElementById('downloadCount');
             const cardDownloadElement = document.getElementById('cardDownloadCount');
@@ -139,6 +135,8 @@ async function trackDownload() {
             
             // Show success message
             showNotification('Download started! 🥇', 'success');
+        } else {
+            showNotification('Download started! (Tracking failed)', 'info');
         }
     } catch (error) {
         console.error('Error tracking download:', error);
@@ -148,14 +146,16 @@ async function trackDownload() {
 
 // Show notification
 function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.innerHTML = `
-        <div class="notification-content">
-            <span>${message}</span>
-            <button class="notification-close">&times;</button>
-        </div>
+        <span>${message}</span>
+        <button class="notification-close" onclick="this.parentElement.remove()">×</button>
     `;
     
     // Add styles
@@ -165,60 +165,56 @@ function showNotification(message, type = 'info') {
         right: 20px;
         background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
         color: white;
-        padding: 15px 20px;
-        border-radius: 5px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        padding: 12px 20px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         z-index: 10000;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
         max-width: 300px;
     `;
     
-    document.body.appendChild(notification);
+    // Add close button styles
+    const closeButton = notification.querySelector('.notification-close');
+    closeButton.style.cssText = `
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 0;
+        margin-left: 10px;
+    `;
     
-    // Animate in
-    setTimeout(() => {
-        notification.style.transform = 'translateX(0)';
-    }, 100);
+    // Add to page
+    document.body.appendChild(notification);
     
     // Auto remove after 5 seconds
     setTimeout(() => {
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
+        if (notification.parentElement) {
+            notification.remove();
+        }
     }, 5000);
-    
-    // Close button functionality
-    const closeBtn = notification.querySelector('.notification-close');
-    closeBtn.addEventListener('click', () => {
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    });
 }
 
-// Navigation Toggle
-const navToggle = document.getElementById('navToggle');
-const navMenu = document.getElementById('navMenu');
-
-navToggle.addEventListener('click', function() {
-    navToggle.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
-
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-    });
-});
+// Animate counter
+function animateCounter(element, target, duration = 2000) {
+    const start = 0;
+    const increment = target / (duration / 16);
+    
+    function updateCounter() {
+        const current = parseInt(element.textContent.replace(/,/g, ''));
+        if (current < target) {
+            element.textContent = Math.min(current + increment, target).toLocaleString();
+            requestAnimationFrame(updateCounter);
+        }
+    }
+    
+    updateCounter();
+}
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -234,25 +230,46 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Animated Counter for Stats
-function animateCounter(element, target, duration = 2000) {
-    let start = 0;
-    const increment = target / (duration / 16);
-    
-    function updateCounter() {
-        start += increment;
-        if (start < target) {
-            element.textContent = Math.floor(start).toLocaleString();
-            requestAnimationFrame(updateCounter);
-        } else {
-            element.textContent = target.toLocaleString();
-        }
-    }
-    
-    updateCounter();
+// Mobile navigation toggle
+const navToggle = document.getElementById('navToggle');
+const navMenu = document.getElementById('navMenu');
+
+if (navToggle && navMenu) {
+    navToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        navToggle.classList.toggle('active');
+    });
 }
 
-// Intersection Observer for animations
+// Close mobile menu when clicking on a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        navToggle.classList.remove('active');
+    });
+});
+
+// Back to top button
+const backToTopButton = document.getElementById('backToTop');
+
+if (backToTopButton) {
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            backToTopButton.style.display = 'block';
+        } else {
+            backToTopButton.style.display = 'none';
+        }
+    });
+    
+    backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+// Add scroll animations
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -261,198 +278,100 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-            
-            // Animate counters when stats section is visible
-            if (entry.target.classList.contains('stat-number')) {
-                const target = parseInt(entry.target.getAttribute('data-target'));
-                animateCounter(entry.target, target);
-            }
+            entry.target.classList.add('animate');
         }
     });
 }, observerOptions);
 
 // Observe elements for animation
-document.querySelectorAll('.feature-card, .step-item, .stat-number').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+document.querySelectorAll('.feature-card, .step, .download-feature').forEach(el => {
     observer.observe(el);
 });
 
-// Back to Top Button
-const backToTopBtn = document.getElementById('backToTop');
-
-window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-        backToTopBtn.classList.add('visible');
-    } else {
-        backToTopBtn.classList.remove('visible');
-    }
-});
-
-backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-// Parallax Effect for Hero Section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const parallax = document.querySelector('.particles');
-    if (parallax) {
-        const speed = scrolled * 0.5;
-        parallax.style.transform = `translateY(${speed}px)`;
-    }
-});
-
-// Button Ripple Effect
+// Add hover effects to buttons
 document.querySelectorAll('.btn').forEach(button => {
-    button.addEventListener('click', function(e) {
-        const ripple = this.querySelector('.btn-ripple');
-        if (ripple) {
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-            
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-            ripple.style.transform = 'translate(-50%, -50%) scale(0)';
-            
-            setTimeout(() => {
-                ripple.style.transform = 'translate(-50%, -50%) scale(1)';
-            }, 10);
-            
-            setTimeout(() => {
-                ripple.style.transform = 'translate(-50%, -50%) scale(0)';
-            }, 600);
-        }
-    });
-});
-
-// Download Progress Animation
-document.querySelectorAll('.btn-download').forEach(btn => {
-    btn.addEventListener('mouseenter', function() {
-        const progress = this.querySelector('.download-progress');
-        if (progress) {
-            progress.style.width = '100%';
-        }
+    button.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 8px 25px rgba(255, 165, 0, 0.3)';
     });
     
-    btn.addEventListener('mouseleave', function() {
-        const progress = this.querySelector('.download-progress');
-        if (progress) {
-            progress.style.width = '0%';
-        }
+    button.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = '';
     });
 });
 
-// Feature Card Hover Effects
-document.querySelectorAll('.feature-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-10px) scale(1.02)';
-    });
+// Add particle effect
+function createParticles() {
+    const particlesContainer = document.querySelector('.particles');
+    if (!particlesContainer) return;
     
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-    });
-});
-
-// Social Media Icons Animation
-document.querySelectorAll('.social-icon').forEach(icon => {
-    icon.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-5px) scale(1.1)';
-    });
-    
-    icon.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-    });
-});
-
-// Mobile Touch Support
-let touchStartY = 0;
-let touchEndY = 0;
-
-document.addEventListener('touchstart', function(e) {
-    touchStartY = e.changedTouches[0].screenY;
-});
-
-document.addEventListener('touchend', function(e) {
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipe();
-});
-
-function handleSwipe() {
-    const swipeThreshold = 50;
-    const diff = touchStartY - touchEndY;
-    
-    if (Math.abs(diff) > swipeThreshold) {
-        if (diff > 0) {
-            // Swipe up - could be used for navigation
-            console.log('Swipe up detected');
-        } else {
-            // Swipe down - could be used for navigation
-            console.log('Swipe down detected');
-        }
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.cssText = `
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 165, 0, 0.6);
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: float ${3 + Math.random() * 4}s infinite ease-in-out;
+            animation-delay: ${Math.random() * 2}s;
+        `;
+        particlesContainer.appendChild(particle);
     }
 }
 
-// Performance Optimization: Throttle scroll events
-function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
+// Initialize particles
+createParticles();
+
+// Add CSS for animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+        50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+    }
+    
+    .animate {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
-}
-
-// Apply throttling to scroll events
-window.addEventListener('scroll', throttle(() => {
-    // Scroll-based animations and effects
-    const scrolled = window.pageYOffset;
-    const navbar = document.querySelector('.navbar');
     
-    if (scrolled > 100) {
-        navbar.style.background = 'rgba(10, 10, 10, 0.98)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
-    } else {
-        navbar.style.background = 'rgba(10, 10, 10, 0.95)';
-        navbar.style.boxShadow = 'none';
-    }
-}, 16));
-
-// Keyboard Navigation Support
-document.addEventListener('keydown', function(e) {
-    // Escape key to close mobile menu
-    if (e.key === 'Escape') {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
+    .notification {
+        animation: slideInRight 0.3s ease-out;
     }
     
-    // Arrow keys for navigation (optional)
-    if (e.key === 'ArrowUp' && e.ctrlKey) {
-        e.preventDefault();
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
     }
-});
+`;
+document.head.appendChild(style);
 
-// Preload critical images
+// Preload images for better performance
 function preloadImages() {
     const images = [
-        'ic_logo.png'
+        '../ic_logo.png',
+        '../Epic Esports.apk'
     ];
     
     images.forEach(src => {
@@ -461,92 +380,40 @@ function preloadImages() {
     });
 }
 
-// Initialize preloading
 preloadImages();
 
-// Service Worker Registration (for PWA features)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-                console.log('SW registered: ', registration);
-            })
-            .catch(registrationError => {
-                console.log('SW registration failed: ', registrationError);
-            });
-    });
-}
-
-// Add loading animation to download buttons
-document.querySelectorAll('a[download]').forEach(link => {
-    link.addEventListener('click', function() {
-        const originalText = this.querySelector('span').textContent;
-        const icon = this.querySelector('i');
-        
-        // Show loading state
-        this.querySelector('span').textContent = 'Downloading...';
-        icon.className = 'fas fa-spinner fa-spin';
-        
-        // Reset after a delay (simulating download)
-        setTimeout(() => {
-            this.querySelector('span').textContent = originalText;
-            icon.className = 'fas fa-download';
-        }, 3000);
-    });
-});
-
-// Add confetti effect for successful actions
+// Add confetti effect on download
 function createConfetti() {
-    const colors = ['#ff4500', '#e63e00', '#ff6a00', '#ffffff'];
-    const confettiCount = 50;
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'];
     
-    for (let i = 0; i < confettiCount; i++) {
+    for (let i = 0; i < 50; i++) {
         const confetti = document.createElement('div');
-        confetti.style.position = 'fixed';
-        confetti.style.left = Math.random() * 100 + 'vw';
-        confetti.style.top = '-10px';
-        confetti.style.width = '10px';
-        confetti.style.height = '10px';
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.borderRadius = '50%';
-        confetti.style.pointerEvents = 'none';
-        confetti.style.zIndex = '9999';
-        confetti.style.animation = `confettiFall ${Math.random() * 3 + 2}s linear forwards`;
-        
+        confetti.style.cssText = `
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            left: ${Math.random() * 100}vw;
+            top: -10px;
+            z-index: 9999;
+            animation: confettiFall ${3 + Math.random() * 2}s linear forwards;
+        `;
         document.body.appendChild(confetti);
         
-        setTimeout(() => {
-            confetti.remove();
-        }, 5000);
+        setTimeout(() => confetti.remove(), 5000);
     }
 }
 
-// Add confetti animation to CSS
-const style = document.createElement('style');
-style.textContent = `
+// Add confetti animation
+const confettiStyle = document.createElement('style');
+confettiStyle.textContent = `
     @keyframes confettiFall {
         to {
-            transform: translateY(100vh) rotate(360deg);
-            opacity: 0;
+            transform: translateY(100vh) rotate(720deg);
         }
     }
 `;
-document.head.appendChild(style);
+document.head.appendChild(confettiStyle);
 
-// Trigger confetti on download button click
-document.querySelectorAll('a[download]').forEach(link => {
-    link.addEventListener('click', () => {
-        setTimeout(createConfetti, 1000);
-    });
-});
-
-// Add vibration feedback for mobile devices
-if ('vibrate' in navigator) {
-    document.querySelectorAll('.btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            navigator.vibrate(50);
-        });
-    });
-}
-
-console.log('🥇 Epic Esports - Advanced UI Loaded Successfully!'); 
+// Add confetti to download button
+document.getElementById('downloadBtn')?.addEventListener('click', createConfetti); 
