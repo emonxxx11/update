@@ -1,981 +1,419 @@
-/* Reset and Base Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-:root {
-  --primary-color: #ff4500;
-  --secondary-color: #e63e00;
-  --accent-color: #ff6a00;
-  --dark-bg: #0a0a0a;
-  --card-bg: #1a1a1a;
-  --text-primary: #ffffff;
-  --text-secondary: #cccccc;
-  --gradient-primary: linear-gradient(135deg, #ff4500, #e63e00);
-  --gradient-secondary: linear-gradient(135deg, #ff6a00, #ff4500);
-  --shadow-primary: 0 10px 30px rgba(255, 69, 0, 0.3);
-  --shadow-secondary: 0 5px 15px rgba(0, 0, 0, 0.3);
-  --border-radius: 12px;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--dark-bg);
-  color: var(--text-primary);
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-/* Loading Screen */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--dark-bg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  transition: opacity 0.5s ease-out;
-}
-
-.loading-screen.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.loader {
-  text-align: center;
-}
-
-.loading-logo {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 20px;
-  animation: pulse 2s infinite;
-}
-
-.loading-bar {
-  width: 200px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
-  overflow: hidden;
-  margin: 20px auto;
-}
-
-.loading-progress {
-  height: 100%;
-  background: var(--gradient-primary);
-  border-radius: 2px;
-  animation: loading 2s ease-in-out infinite;
-}
-
-/* Navigation */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(10px);
-  z-index: 1000;
-  padding: 1rem 0;
-  transition: var(--transition);
-}
-
-.nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
-.nav-logo-img {
-  width: 40px;
-  height: 40px;
-}
-
-.nav-menu {
-  display: flex;
-  gap: 2rem;
-}
-
-.nav-link {
-  color: var(--text-primary);
-  text-decoration: none;
-  font-weight: 500;
-  transition: var(--transition);
-  position: relative;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--gradient-primary);
-  transition: var(--transition);
-}
-
-.nav-link:hover::after {
-  width: 100%;
-}
-
-.nav-toggle {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-.nav-toggle span {
-  width: 25px;
-  height: 3px;
-  background: var(--text-primary);
-  margin: 3px 0;
-  transition: var(--transition);
-}
-
-/* Hero Section */
-.hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  padding-top: 80px;
-}
-
-.hero-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at center, rgba(255, 69, 0, 0.1) 0%, transparent 70%);
-}
-
-.particles {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    radial-gradient(circle at 20% 80%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 106, 0, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(230, 62, 0, 0.1) 0%, transparent 50%);
-  animation: particleFloat 20s ease-in-out infinite;
-}
-
-.hero-content {
-  text-align: center;
-  max-width: 800px;
-  padding: 0 2rem;
-  z-index: 2;
-  position: relative;
-}
-
-.app-logo-container {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 2rem;
-}
-
-.app-logo {
-  width: 120px;
-  height: 120px;
-  border-radius: 20px;
-  box-shadow: var(--shadow-primary);
-  animation: logoFloat 3s ease-in-out infinite;
-}
-
-.logo-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 140px;
-  height: 140px;
-  background: var(--gradient-primary);
-  border-radius: 20px;
-  filter: blur(20px);
-  opacity: 0.3;
-  animation: logoGlow 3s ease-in-out infinite;
-}
-
-.hero-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 700;
-  margin-bottom: 1rem;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: titleSlide 1s ease-out;
-}
-
-.hero-description {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
-  animation: descriptionSlide 1s ease-out 0.3s both;
-}
-
-.hero-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 3rem;
-  animation: buttonsSlide 1s ease-out 0.6s both;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: var(--border-radius);
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--transition);
-  font-size: 1rem;
-}
-
-.btn-primary {
-  background: var(--gradient-primary);
-  color: white;
-  box-shadow: var(--shadow-primary);
-}
-
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(255, 69, 0, 0.4);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--text-primary);
-  border: 2px solid var(--primary-color);
-}
-
-.btn-secondary:hover {
-  background: var(--primary-color);
-  transform: translateY(-3px);
-}
-
-.btn-ripple {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.btn:hover .btn-ripple {
-  width: 300px;
-  height: 300px;
-}
-
-.hero-stats {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  flex-wrap: wrap;
-  animation: statsSlide 1s ease-out 0.9s both;
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-number {
-  display: block;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 0.5rem;
-}
-
-.stat-label {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Features Section */
-.features {
-  padding: 5rem 0;
-  background: var(--card-bg);
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 4rem;
-}
-
-.section-header h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: 1rem;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.section-header p {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.feature-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.feature-card {
-  background: var(--dark-bg);
-  padding: 2rem;
-  border-radius: var(--border-radius);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  transition: var(--transition);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.feature-card:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-secondary);
-  border-color: var(--primary-color);
-}
-
-.card-icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 1.5rem;
-  background: var(--gradient-primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  color: white;
-  transition: var(--transition);
-}
-
-.feature-card:hover .card-icon {
-  transform: scale(1.1) rotate(5deg);
-}
-
-.feature-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--text-primary);
-}
-
-.feature-card p {
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.card-hover-effect {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--gradient-primary);
-  opacity: 0;
-  transition: var(--transition);
-  z-index: -1;
-}
-
-.feature-card:hover .card-hover-effect {
-  opacity: 0.05;
-}
-
-/* Tutorial Section */
-.tutorial {
-  padding: 5rem 0;
-  background: var(--dark-bg);
-}
-
-.tutorial-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-}
-
-.video-container {
-  position: relative;
-}
-
-.video-wrapper {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  box-shadow: var(--shadow-secondary);
-}
-
-.video-wrapper iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-.tutorial-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.step-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  background: var(--card-bg);
-  border-radius: var(--border-radius);
-  border-left: 4px solid var(--primary-color);
-  transition: var(--transition);
-}
-
-.step-item:hover {
-  transform: translateX(10px);
-  box-shadow: var(--shadow-secondary);
-}
-
-.step-number {
-  width: 40px;
-  height: 40px;
-  background: var(--gradient-primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: white;
-  flex-shrink: 0;
-}
-
-.step-content h4 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-}
-
-.step-content p {
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-/* Download Section */
-.download {
-  padding: 5rem 0;
-  background: var(--gradient-primary);
-  position: relative;
-  overflow: hidden;
-}
-
-.download::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-  opacity: 0.1;
-}
-
-.download-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-}
-
-.download-text h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: 1rem;
-  color: white;
-}
-
-.download-text p {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.download-features {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.download-feature {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: white;
-}
-
-.download-feature i {
-  color: #4CAF50;
-}
-
-.download-card {
-  background: var(--dark-bg);
-  padding: 2rem;
-  border-radius: var(--border-radius);
-  text-align: center;
-  box-shadow: var(--shadow-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.download-logo {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 1rem;
-  border-radius: 15px;
-}
-
-.download-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-}
-
-.download-card p {
-  color: var(--text-secondary);
-  margin-bottom: 1rem;
-}
-
-.download-size {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
-  display: inline-block;
-}
-
-.btn-download {
-  background: var(--gradient-primary);
-  color: white;
-  width: 100%;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  position: relative;
-}
-
-.btn-download:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(255, 69, 0, 0.4);
-}
-
-.download-progress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.3);
-  width: 0;
-  transition: width 0.3s ease;
-}
-
-.btn-download:hover .download-progress {
-  width: 100%;
-}
-
-.download-stats {
-  display: flex;
-  justify-content: space-around;
-  gap: 1rem;
-}
-
-.stat {
-  text-align: center;
-}
-
-.stat-value {
-  display: block;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
-.stat-label {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-}
-
-/* Footer */
-.footer {
-  background: var(--dark-bg);
-  padding: 3rem 0 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.footer-section h4 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: var(--text-primary);
-}
-
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.footer-logo-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
-}
-
-.footer-section p {
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-
-.footer-section ul {
-  list-style: none;
-}
-
-.footer-section ul li {
-  margin-bottom: 0.5rem;
-}
-
-.footer-section ul li a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition: var(--transition);
-}
-
-.footer-section ul li a:hover {
-  color: var(--primary-color);
-}
-
-.social-icons {
-  display: flex;
-  gap: 1rem;
-}
-
-.social-icon {
-  width: 40px;
-  height: 40px;
-  background: var(--card-bg);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition: var(--transition);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.social-icon:hover {
-  background: var(--primary-color);
-  color: white;
-  transform: translateY(-3px);
-}
-
-.footer-bottom {
-  text-align: center;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-secondary);
-}
-
-/* Back to Top Button */
-.back-to-top {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 50px;
-  height: 50px;
-  background: var(--gradient-primary);
-  border: none;
-  border-radius: 50%;
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
-  opacity: 0;
-  visibility: hidden;
-  transition: var(--transition);
-  z-index: 1000;
-  box-shadow: var(--shadow-primary);
-}
-
-.back-to-top.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.back-to-top:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(255, 69, 0, 0.4);
-}
-
-/* Animations */
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-
-@keyframes loading {
-  0% { width: 0%; }
-  50% { width: 70%; }
-  100% { width: 100%; }
-}
-
-@keyframes particleFloat {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(180deg); }
-}
-
-@keyframes logoFloat {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes logoGlow {
-  0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
-}
-
-@keyframes titleSlide {
-  from {
-    opacity: 0;
-    transform: translateY(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes descriptionSlide {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes buttonsSlide {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes statsSlide {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .nav-menu {
-    position: fixed;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: rgba(10, 10, 10, 0.95);
-    backdrop-filter: blur(10px);
-    flex-direction: column;
-    padding: 2rem;
-    transform: translateY(-100%);
-    transition: var(--transition);
-  }
-
-  .nav-menu.active {
-    transform: translateY(0);
-  }
-
-  .nav-toggle {
-    display: flex;
-  }
-
-  .nav-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-
-  .nav-toggle.active span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .nav-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -6px);
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .btn {
-    width: 100%;
-    max-width: 300px;
-    justify-content: center;
-  }
-
-  .hero-stats {
-    gap: 2rem;
-  }
-
-  .tutorial-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .download-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .download-features {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-content {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .social-icons {
-    justify-content: center;
-  }
-
-  .back-to-top {
-    bottom: 1rem;
-    right: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 1rem;
-  }
-
-  .nav-container {
-    padding: 0 1rem;
-  }
-
-  .hero-content {
-    padding: 0 1rem;
-  }
-
-  .feature-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-stats {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .stat-number {
-    font-size: 2rem;
-  }
-}
-
-/* Smooth scrolling for older browsers */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  :root {
-    --primary-color: #ff0000;
-    --text-primary: #ffffff;
-    --text-secondary: #ffffff;
-  }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --dark-bg: #000000;
-    --card-bg: #111111;
-  }
-}
+// Loading Screen
+document.addEventListener('DOMContentLoaded', function() {
+    const loadingScreen = document.getElementById('loadingScreen');
+    
+    // Simulate loading time
+    setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+        }, 500);
+    }, 2000);
+    
+    // Initialize backend integration
+    initializeBackendIntegration();
+});
+
+// Backend Integration Functions
+async function initializeBackendIntegration() {
+    try {
+        // Update stats from backend
+        await updateStats();
+        
+        // Set up download tracking
+        setupDownloadTracking();
+        
+        console.log('🥇 Backend integration initialized successfully!');
+    } catch (error) {
+        console.error('Error initializing backend integration:', error);
+    }
+}
+
+// Backend URL for GitHub Pages integration
+const BACKEND_URL = 'https://count1.onrender.com';
+
+// Update stats from backend
+async function updateStats() {
+    try {
+        console.log('🥇 Fetching stats from:', `${BACKEND_URL}/api/stats`);
+        const response = await fetch(`${BACKEND_URL}/api/stats`);
+        console.log('🥇 Response status:', response.status);
+        const data = await response.json();
+        console.log('🥇 Backend data:', data);
+        
+        if (data.success) {
+            // Update the stat numbers with real data from backend
+            const downloadElement = document.getElementById('downloadCount');
+            const tkElement = document.getElementById('tkEarned');
+            const tournamentElement = document.getElementById('tournamentCount');
+            
+            if (downloadElement) {
+                downloadElement.setAttribute('data-target', data.stats.totalDownloads);
+                downloadElement.textContent = data.stats.totalDownloads.toLocaleString();
+            }
+            
+            // Also update the download card count
+            const cardDownloadElement = document.getElementById('cardDownloadCount');
+            if (cardDownloadElement) {
+                cardDownloadElement.textContent = data.stats.totalDownloads.toLocaleString();
+            }
+            
+            if (tkElement) {
+                tkElement.setAttribute('data-target', data.stats.totalTkEarned.replace(' TK', ''));
+                tkElement.textContent = data.stats.totalTkEarned;
+            }
+            
+            if (tournamentElement) {
+                tournamentElement.setAttribute('data-target', data.stats.totalTournaments);
+                tournamentElement.textContent = data.stats.totalTournaments.toLocaleString();
+            }
+        } else {
+            // Show 0 when no data is available
+            const downloadElement = document.getElementById('downloadCount');
+            const tkElement = document.getElementById('tkEarned');
+            const tournamentElement = document.getElementById('tournamentCount');
+            
+            if (downloadElement) {
+                downloadElement.textContent = '0';
+            }
+            
+            // Also update the download card count
+            const cardDownloadElement = document.getElementById('cardDownloadCount');
+            if (cardDownloadElement) {
+                cardDownloadElement.textContent = '0';
+            }
+            if (tkElement) {
+                tkElement.textContent = '0 TK';
+            }
+            if (tournamentElement) {
+                tournamentElement.textContent = '0';
+            }
+        }
+    } catch (error) {
+        console.error('🥇 Error updating stats:', error);
+        console.error('🥇 Error details:', error.message);
+    }
+}
+
+// Setup download tracking
+function setupDownloadTracking() {
+    const downloadButton = document.getElementById('downloadBtn');
+    if (downloadButton) {
+        downloadButton.addEventListener('click', trackDownload);
+    }
+}
+
+// Track download when user clicks download button
+async function trackDownload() {
+    try {
+        console.log('🥇 Tracking download...');
+        const response = await fetch(`${BACKEND_URL}/api/track-download`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent,
+                referrer: document.referrer
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Update the download count immediately
+            const downloadElement = document.getElementById('downloadCount');
+            const cardDownloadElement = document.getElementById('cardDownloadCount');
+            
+            if (downloadElement) {
+                downloadElement.textContent = data.totalDownloads.toLocaleString();
+            }
+            if (cardDownloadElement) {
+                cardDownloadElement.textContent = data.totalDownloads.toLocaleString();
+            }
+            
+            // Show success message
+            showNotification('Download started! 🥇', 'success');
+        } else {
+            showNotification('Download started! (Tracking failed)', 'info');
+        }
+    } catch (error) {
+        console.error('Error tracking download:', error);
+        showNotification('Download started! (Tracking failed)', 'info');
+    }
+}
+
+// Show notification
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <span>${message}</span>
+        <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+    `;
+    
+    // Add styles
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        max-width: 300px;
+    `;
+    
+    // Add close button styles
+    const closeButton = notification.querySelector('.notification-close');
+    closeButton.style.cssText = `
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 0;
+        margin-left: 10px;
+    `;
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.remove();
+        }
+    }, 5000);
+}
+
+// Animate counter
+function animateCounter(element, target, duration = 2000) {
+    const start = 0;
+    const increment = target / (duration / 16);
+    
+    function updateCounter() {
+        const current = parseInt(element.textContent.replace(/,/g, ''));
+        if (current < target) {
+            element.textContent = Math.min(current + increment, target).toLocaleString();
+            requestAnimationFrame(updateCounter);
+        }
+    }
+    
+    updateCounter();
+}
+
+// Smooth scrolling for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Mobile navigation toggle
+const navToggle = document.getElementById('navToggle');
+const navMenu = document.getElementById('navMenu');
+
+if (navToggle && navMenu) {
+    navToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        navToggle.classList.toggle('active');
+    });
+}
+
+// Close mobile menu when clicking on a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        navToggle.classList.remove('active');
+    });
+});
+
+// Back to top button
+const backToTopButton = document.getElementById('backToTop');
+
+if (backToTopButton) {
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            backToTopButton.style.display = 'block';
+        } else {
+            backToTopButton.style.display = 'none';
+        }
+    });
+    
+    backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+// Add scroll animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate');
+        }
+    });
+}, observerOptions);
+
+// Observe elements for animation
+document.querySelectorAll('.feature-card, .step, .download-feature').forEach(el => {
+    observer.observe(el);
+});
+
+// Add hover effects to buttons
+document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 8px 25px rgba(255, 165, 0, 0.3)';
+    });
+    
+    button.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = '';
+    });
+});
+
+// Add particle effect
+function createParticles() {
+    const particlesContainer = document.querySelector('.particles');
+    if (!particlesContainer) return;
+    
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.cssText = `
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 165, 0, 0.6);
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: float ${3 + Math.random() * 4}s infinite ease-in-out;
+            animation-delay: ${Math.random() * 2}s;
+        `;
+        particlesContainer.appendChild(particle);
+    }
+}
+
+// Initialize particles
+createParticles();
+
+// Add CSS for animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+        50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+    }
+    
+    .animate {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .notification {
+        animation: slideInRight 0.3s ease-out;
+    }
+    
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// Preload images for better performance
+function preloadImages() {
+    const images = [
+        '../ic_logo.png',
+        '../Epic Esports.apk'
+    ];
+    
+    images.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+}
+
+preloadImages();
+
+// Add confetti effect on download
+function createConfetti() {
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'];
+    
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.style.cssText = `
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            left: ${Math.random() * 100}vw;
+            top: -10px;
+            z-index: 9999;
+            animation: confettiFall ${3 + Math.random() * 2}s linear forwards;
+        `;
+        document.body.appendChild(confetti);
+        
+        setTimeout(() => confetti.remove(), 5000);
+    }
+}
+
+// Add confetti animation
+const confettiStyle = document.createElement('style');
+confettiStyle.textContent = `
+    @keyframes confettiFall {
+        to {
+            transform: translateY(100vh) rotate(720deg);
+        }
+    }
+`;
+document.head.appendChild(confettiStyle);
+
+// Add confetti to download button
+document.getElementById('downloadBtn')?.addEventListener('click', createConfetti); 
