@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Epic Esports App 🥇</title>
+  <link rel="icon" type="image/png" href="ic_logo.png">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loader">
+      <img src="ic_logo.png" alt="Loading" class="loading-logo">
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+      <p>Loading Epic Esports...</p>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <img src="ic_logo.png" alt="Epic Esports" class="nav-logo-img">
+        <span>Epic Esports</span>
+      </div>
+      <div class="nav-menu" id="navMenu">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#tutorial" class="nav-link">Tutorial</a>
+        <a href="#download" class="nav-link">Download</a>
+      </div>
+      <div class="nav-toggle" id="navToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero" id="home">
+    <div class="hero-background">
+      <div class="particles"></div>
+    </div>
+    <div class="hero-content">
+      <div class="app-logo-container">
+        <img src="ic_logo.png" alt="App Logo" class="app-logo">
+        <div class="logo-glow"></div>
+      </div>
+   
+      <h1 class="hero-title">Epic Esports 🥇</h1>
+      <p class="hero-description">আপনি কি একজন eSports Player? প্রতিদিন গেম খেলে টাকা ইনকাম করুন এবং দেখিয়ে দিন আপনি একজন Real eSports Player</p>
+      
+      <div class="hero-buttons">
+        <a href="Epic Esports.apk" class="btn btn-primary" download id="downloadBtn">
+          <i class="fas fa-download"></i>
+          <span>Download APK</span>
+          <div class="btn-ripple"></div>
+        </a>
+        <a href="#tutorial" class="btn btn-secondary">
+          <i class="fab fa-youtube"></i>
+          <span>Watch Tutorial</span>
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number" data-target="0" id="downloadCount">0</span>
+          <span class="stat-label">Active Players</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="0" id="tkEarned">0 TK</span>
+          <span class="stat-label">TK Earned</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="0" id="tournamentCount">0</span>
+          <span class="stat-label">Tournaments</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why Choose Epic Esports? 🏆</h2>
+        <p>Experience the ultimate gaming platform with advanced features</p>
+      </div>
+      
+      <div class="feature-cards">
+        <div class="feature-card" data-aos="fade-up">
+          <div class="card-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <h3>Exciting Rewards</h3>
+          <p>Win real prizes and recognition in every tournament. Earn up to 50,000 TK per tournament!</p>
+          <div class="card-hover-effect"></div>
+        </div>
+        
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="card-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Public Community</h3>
+          <p>Connect with gamers countrywide and create powerful squads. Join our growing community!</p>
+          <div class="card-hover-effect"></div>
+        </div>
+        
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="card-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3>Fast & Secure Withdraw</h3>
+          <p>Play seamlessly with instant withdrawals. Get your earnings in minutes, not days!</p>
+          <div class="card-hover-effect"></div>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+          <div class="card-icon">
+            <i class="fas fa-gamepad"></i>
+          </div>
+          <h3>Multiple Games</h3>
+          <p>Support for PUBG, Free Fire, Call of Duty, and more popular mobile games!</p>
+          <div class="card-hover-effect"></div>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="800">
+          <div class="card-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>Anti-Cheat System</h3>
+          <p>Fair play guaranteed with advanced anti-cheat technology and 24/7 monitoring!</p>
+          <div class="card-hover-effect"></div>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="1000">
+          <div class="card-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3>24/7 Support</h3>
+          <p>Get help anytime with our dedicated support team. We're here for you 24/7!</p>
+          <div class="card-hover-effect"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tutorial Section -->
+  <section class="tutorial" id="tutorial">
+    <div class="container">
+      <div class="section-header">
+        <h2>How to Download & Install 🎥</h2>
+        <p>Follow our step-by-step tutorial to get started</p>
+      </div>
+      
+      <div class="tutorial-content">
+        <div class="video-container" data-aos="fade-right">
+          <div class="video-wrapper">
+            <iframe 
+              src="https://www.youtube.com/embed/MR7GjPfnwG4?si=GlLDiu1RZB-tFouN" 
+              title="Epic Esports Installation Tutorial"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+        
+        <div class="tutorial-steps" data-aos="fade-left">
+          <div class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>Download APK</h4>
+              <p>Click the download button above to get the Epic Esports APK file</p>
+            </div>
+          </div>
+          
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>Enable Unknown Sources</h4>
+              <p>Go to Settings > Security > Unknown Sources and enable it</p>
+            </div>
+          </div>
+          
+          <div class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>Install the App</h4>
+              <p>Open the downloaded APK file and follow the installation process</p>
+            </div>
+          </div>
+          
+          <div class="step-item">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h4>Start Gaming</h4>
+              <p>Open the app, create your account, and start earning TK!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Section -->
+  <section class="download" id="download">
+    <div class="container">
+      <div class="download-content">
+        <div class="download-text" data-aos="fade-right">
+          <h2>Ready to Start Your Gaming Journey? 🚀</h2>
+          <p>Join thousands of players who are already earning TK daily. Download now and start competing in exciting tournaments!</p>
+          
+          <div class="download-features">
+            <div class="download-feature">
+              <i class="fas fa-check-circle"></i>
+              <span>Free to Download</span>
+            </div>
+            <div class="download-feature">
+              <i class="fas fa-check-circle"></i>
+              <span>No Registration Fee</span>
+            </div>
+            <div class="download-feature">
+              <i class="fas fa-check-circle"></i>
+              <span>Instant Withdrawals</span>
+            </div>
+            <div class="download-feature">
+              <i class="fas fa-check-circle"></i>
+              <span>24/7 Support</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="download-action" data-aos="fade-left">
+          <div class="download-card">
+            <img src="ic_logo.png" alt="Epic Esports" class="download-logo">
+            <h3>Epic Esports</h3>
+            <p>Latest Version 2.1.0</p>
+            <div class="download-size">Size: 45.2 MB</div>
+            
+            <a href="Epic Esports.apk" class="btn btn-download" download>
+              <i class="fas fa-download"></i>
+              <span>Download Now</span>
+              <div class="download-progress"></div>
+            </a>
+            
+            <div class="download-stats">
+              <div class="stat">
+                <span class="stat-value" id="cardDownloadCount">0</span>
+                <span class="stat-label">Downloads</span>
+              </div>
+              <div class="stat">
+                <span class="stat-value">New</span>
+                <span class="stat-label">Rating</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <img src="ic_logo.png" alt="Epic Esports" class="footer-logo-img">
+            <h3>Epic Esports</h3>
+          </div>
+          <p>The ultimate gaming platform for competitive players. Earn real money while playing your favorite games!</p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#tutorial">Tutorial</a></li>
+            <li><a href="#download">Download</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Connect With Us</h4>
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://youtu.be/MR7GjPfnwG4?si=GlLDiu1RZB-tFouN" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Epic Esports. All rights reserved. | Made with ❤️ for gamers</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="script.js"></script>
+</body>
+</html>
